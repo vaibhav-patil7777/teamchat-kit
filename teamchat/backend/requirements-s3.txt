@@ -1,0 +1,3 @@
+# Optional: file storage on S3-compatible service (Cloudflare R2, Backblaze B2, ...)
+-r requirements.txt
+django-storages[s3]>=1.14

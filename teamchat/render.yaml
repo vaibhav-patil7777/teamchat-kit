@@ -1,0 +1,27 @@
+# Render Blueprint (optional). Or create the service by hand with the same commands.
+services:
+  - type: web
+    name: teamchat-api
+    runtime: python
+    rootDir: backend
+    plan: free
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    startCommand: python manage.py migrate && python manage.py create_admin --if-missing && daphne -b 0.0.0.0 -p $PORT config.asgi:application
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.3
+      - key: DEBUG
+        value: "0"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL          # paste your Neon connection string
+        sync: false
+      - key: ADMIN_USERNAME
+        value: Vaibhav777
+      - key: ADMIN_PASSWORD        # set a strong password here
+        sync: false
+      - key: SERVE_FRONTEND        # frontend is on Netlify
+        value: "0"
+      - key: CORS_ORIGINS          # your Netlify URL, e.g. https://teamchat.netlify.app
+        sync: false
